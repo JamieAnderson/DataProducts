@@ -15,11 +15,9 @@ knit        : slidify::knit2slides
 
 1. Demonstrates the Accuracy Improvements of a Penalized Model
 2. Shows the Effects of the Lasso Penalty on Predictor Coefficients
-3. Confirms the Lasso's Ability to Remove Noise Variables from the Model
-<br>
-The next two slides take a look at the model preprocessing and building not visible in the App
+3. Confirms the Lasso's Ability to Remove Noise Variables from the Model <br>
 
---- .class #id 
+--- 
 
 ## Look Under The Hood 1
 ```{r,echo=FALSE,results='hide',warning=FALSE,message=FALSE,cache=TRUE}
