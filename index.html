@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Visualizing The Lasso Penalty</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Visualizing The Lasso Penalty">
+  <meta name="author" content="Jamie Anderson">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight/css/solarized_dark.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="libraries/widgets/bootstrap/css/bootstrap.css"></link>
+<link rel=stylesheet href="libraries/widgets/quiz/css/demo.css"></link>
+<link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Visualizing The Lasso Penalty</h1>
+    <h2>My Pitch</h2>
+    <p>Jamie Anderson<br/>Developing Data Products</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Benefits of My App</h2>
+  </hgroup>
+  <article data-timings="">
+    <ol>
+<li>Demonstrates the Accuracy Improvements of a Penalized Model</li>
+<li>Shows the Effects of the Lasso Penalty on Predictor Coefficients</li>
+<li>Confirms the Lasso&#39;s Ability to Remove Noise Variables from the Model
+<br>
+The next two slides take a look at the model preprocessing and building not visible in the App</li>
+</ol>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Look Under The Hood 1</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><strong>Load complete cases of the data and split:</strong></p>
+
+<pre><code class="r">hitterSal &lt;-  Hitters[complete.cases(Hitters),19]
+hitterStats &lt;- Hitters[complete.cases(Hitters),-19] 
+</code></pre>
+
+<p><strong>Scale numeric variables, so \(\mu=0\) and \(2\sigma=1\):</strong></p>
+
+<pre><code class="r">integer &lt;- sapply(hitterStats, is.integer)
+scaledvars &lt;- apply(hitterStats[,integer],2,function(x){(x-mean(x))/(2*sd(x))})
+hitterStats  &lt;- data.frame(scaledvars,hitterStats[,!integer])
+</code></pre>
+
+<p><strong>Add six noise variables and code dummy variables:</strong></p>
+
+<pre><code class="r">set.seed(5652)
+hitterStats &lt;- data.frame(hitterStats,Fake1=rnorm(263,0,0.5),Fake2=rnorm(263,0,0.5),
+                          Fake3=rnorm(263,0,0.5),Fake4=rnorm(263,0,0.5), 
+                          Fake5=rnorm(263,0,0.5), Fake6=rnorm(263,0,0.5))
+hitterStats1  &lt;- model.matrix(hitterSal~.-1,data=hitterStats)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Look Under the Hood 2</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><strong>Next I trained the model, using train in the caret package:</strong></p>
+
+<pre><code class="r">trcontrol &lt;- trainControl(method=&quot;cv&quot;,number=10)
+lassoGrid &lt;- expand.grid(fraction=seq(.1,1,by=0.01))
+lassoTrained &lt;- train(x=hitterStats1,y=hitterSal,method=&quot;lasso&quot;,tuneGrid=lassoGrid,trControl=trcontrol)
+</code></pre>
+
+<p><strong>And I plotted the results using ggplot2:</strong></p>
+
+<pre><code class="r">penGraph &lt;- ggplot(lassoTrained)
+penGraph
+</code></pre>
+
+<p><img src="figure/unnamed-chunk-6.png" alt="plot of chunk unnamed-chunk-6"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Further Improvements</h2>
+  </hgroup>
+  <article data-timings="">
+    
+<div class="quiz quiz-single well ">
+  <p>While I am happy with my App there are certainly additions I&#39;d like to make. <br>
+Take a guess what they are!</p>
+
+<ol>
+<li><p>Ridge Regression Option</p></li>
+<li><p>Combination of Ridge Regression and Lasso (Elastic Net)</p></li>
+<li><p>An option to let the user choose the number of noise variables</p></li>
+<li><p><em>All of the Above</em></p></li>
+</ol>
+
+  <button class="quiz-submit btn btn-primary">Submit</button>
+  <button class="quiz-toggle-hint btn btn-info">Show Hint</button>
+  <button class="quiz-show-answer btn btn-success">Show Answer</button>
+  <button class="quiz-clear btn btn-danger">Clear</button>
+  
+  </div>
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Benefits of My App'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='Look Under The Hood 1'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='Look Under the Hood 2'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Further Improvements'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  <script src="libraries/widgets/bootstrap/js/bootstrap.min.js"></script>
+<script src="libraries/widgets/bootstrap/js/bootbox.min.js"></script>
+<script src="libraries/widgets/quiz/js/jquery.quiz.js"></script>
+<script src="libraries/widgets/quiz/js/mustache.min.js"></script>
+<script src="libraries/widgets/quiz/js/quiz-app.js"></script>
+
+  <script>  
+  $(function (){ 
+    $("#example").popover(); 
+    $("[rel='tooltip']").tooltip(); 
+  });  
+  </script>  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+ 
+  </html>
