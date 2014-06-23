@@ -78,7 +78,7 @@ Take a guess what they are!
 
 *** .hint
 
-I'm overly ambitious sometimes.
+I can be overly ambitious sometimes.
 
 *** .explanation
 
