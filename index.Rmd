@@ -75,8 +75,7 @@ Take a guess what they are!
 3. An option to let the user choose the number of noise variables
 
 4. _All of the Above_
-
-
+***.hint I'm overly ambitious sometimes.
 
 
 
