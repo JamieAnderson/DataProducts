@@ -4,8 +4,8 @@ subtitle    : My Pitch
 author      : Jamie Anderson
 job         : Developing Data Products
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : highlight  # {highlight.js, prettify, highlight}
-hitheme     : solarized_dark      # 
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : solarized_dark
 widgets     : [bootstrap,mathjax,quiz]   # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
@@ -75,8 +75,14 @@ Take a guess what they are!
 3. An option to let the user choose the number of noise variables
 
 4. _All of the Above_
-***.hint I'm overly ambitious sometimes.
 
+*** .hint
+
+I'm overly ambitious sometimes.
+
+*** .explanation
+
+Would I like to add those features? <br> Of course! <br> Will I? <br> Not likely. 
 
 
 

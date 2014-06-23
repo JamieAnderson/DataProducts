@@ -4,8 +4,8 @@ subtitle    : My Pitch
 author      : Jamie Anderson
 job         : Developing Data Products
 framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
-highlighter : highlight  # {highlight.js, prettify, highlight}
-hitheme     : solarized_dark      # 
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : solarized_dark
 widgets     : [bootstrap,mathjax,quiz]   # {mathjax, quiz, bootstrap}
 mode        : selfcontained # {standalone, draft}
 knit        : slidify::knit2slides
@@ -15,11 +15,9 @@ knit        : slidify::knit2slides
 
 1. Demonstrates the Accuracy Improvements of a Penalized Model
 2. Shows the Effects of the Lasso Penalty on Predictor Coefficients
-3. Confirms the Lasso's Ability to Remove Noise Variables from the Model
-<br>
-The next two slides take a look at the model preprocessing and building not visible in the App
+3. Confirms the Lasso's Ability to Remove Noise Variables from the Model <br>
 
---- .class #id 
+--- 
 
 ## Look Under The Hood 1
 
@@ -78,8 +76,13 @@ Take a guess what they are!
 
 4. _All of the Above_
 
+*** .hint
 
+I'm overly ambitious sometimes.
 
+*** .explanation
+
+Would I like to add those features? <br> Of course! <br> Will I? <br> Not likely. 
 
 
 
